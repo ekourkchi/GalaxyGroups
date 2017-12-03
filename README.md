@@ -1,6 +1,6 @@
 # Galaxy Groups
 
-Galaxy Groups Within 3500 km s-1
+Galaxy Groups Within 3500 km/s
 
 Click here to see the paper: http://adsabs.harvard.edu/abs/2017ApJ...843...16K
 
