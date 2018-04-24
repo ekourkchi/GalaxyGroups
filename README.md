@@ -1,6 +1,6 @@
 # Galaxy Groups
 
-Galaxy Groups Within 3500 km/s
+This repository contains all the code for the grouping algorithm, presented by Kourkchi and Tully (2017, ApJ, 843, 16), Galaxy Groups Within 3500 km/s. 
 
 Click here to see the paper: http://adsabs.harvard.edu/abs/2017ApJ...843...16K
 
