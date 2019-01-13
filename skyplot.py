@@ -2677,7 +2677,7 @@ class Plot_page(tk.Frame):
 
 	self.resetax_button.on_clicked(reset_func)
 	###############################
-	rax = axes([0.85, 0.1, 0.11, 0.13], axisbg='tan')
+	rax = axes([0.85, 0.1, 0.11, 0.13], facecolor='tan')
         self.radio = RadioButtons(rax, ('No', 'Yes'), active=0)
         annotate('Random Colors ?', (0.86,0.21), xycoords='figure fraction', size=10, color='black')
         
