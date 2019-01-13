@@ -1,6 +1,6 @@
 # Galaxy Groups
 
-This repository contains all the code for the grouping algorithm, presented by Kourkchi and Tully (2017, ApJ, 843, 16), Galaxy Groups Within 3500 km/s. 
+This repository contains all the code for the grouping algorithm, presented by Kourkchi and Tully (2017, ApJ, 843, 16), Galaxy Groups Within 3,500 km/s. 
 
 ![all_sky_v05](https://user-images.githubusercontent.com/13570487/51081861-7ed45800-169e-11e9-82df-e4317d211697.png)
 
