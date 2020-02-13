@@ -21,7 +21,7 @@ import time
 import matplotlib
 # matplotlib.use('TkAgg')
 from matplotlib.widgets import Slider, Button, RadioButtons
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 from matplotlib.colors import LogNorm
 from matplotlib.lines import Line2D
@@ -36,11 +36,11 @@ from kapteyn import wcs
 from optparse import OptionParser
 
 
-import ttk as ttk
-import Tkinter as tk
-from tkFileDialog import askopenfilename
-import tkMessageBox
-import tkFileDialog
+import tkinter.ttk as ttk
+import tkinter as tk
+from tkinter.filedialog import askopenfilename
+import tkinter.messagebox
+import tkinter.filedialog
 
 import matplotlib.backends.backend_tkagg as tkagg
 
@@ -419,9 +419,9 @@ class PointBrowser(object):
 
             if N > 1:
                 ind = event.ind
-                print "\n\n*****************************************************"
-                print "***** All Neighbour Galaxies ************************"
-                print "*****************************************************"
+                print("\n\n*****************************************************")
+                print("***** All Neighbour Galaxies ************************")
+                print("*****************************************************")
 
                 myTable = Table()
                 myTable.add_column(Column(data=self.id_gal[ind], name='pgc'))
@@ -446,7 +446,7 @@ class PointBrowser(object):
                     Column(data=self.nest_gal[ind],  name='nest'))
                 myTable.add_column(
                     Column(data=self.objname_gal[ind],  name='objname'))
-                print myTable
+                print(myTable)
 
             self.single_info(dataind)
 
@@ -454,7 +454,7 @@ class PointBrowser(object):
     def single_info(self, dataind):
 
         ind = [dataind]
-        print "\n\n------ Selected Galaxy -------------------------------"
+        print("\n\n------ Selected Galaxy -------------------------------")
 
         myTable = Table()
         myTable.add_column(Column(data=self.id_gal[ind], name='pgc'))
@@ -474,7 +474,7 @@ class PointBrowser(object):
             Column(data=self.mDistErr_gal[ind],  name='mDistErr'))
         myTable.add_column(Column(data=self.nest_gal[ind],  name='nest'))
         myTable.add_column(Column(data=self.objname_gal[ind],  name='objname'))
-        print myTable
+        print(myTable)
 
         if self.mode == 'cartesian':
             sgx, sgy, sgz = xyz_list(self.sgl_gal[ind], self.sgb_gal[ind], self.Vls_gal[ind],
@@ -536,10 +536,9 @@ def table_deliver(filee):
             filee, delimiter='|', filling_values="-100000", names=True, dtype=None)
 
     except:
-        print "\n[Error] The catalog \""+filee + \
-            "\" is not available, or has a wrong format ..."
-        print >> sys.stderr, "You can use \"python " + \
-            sys.argv[0]+" -h\" for help ... (or 'skyplot -h') \n"
+        print("\n[Error] The catalog \""+filee +
+              "\" is not available, or has a wrong format ...")
+        print("You can use \"python "+sys.argv[0]+" -h\" for help ... (or 'skyplot -h') \n", file=sys.stderr)
         exit(1)
 
     id = mytable['pgc']
@@ -561,8 +560,8 @@ def table_deliver(filee):
     mDistErr = mytable['mDistErr']
     sigmaP_lum = mytable['sigmaP_lum']
 
-    print "\n[Success] The catalog \""+filee+"\" was sucessfully loaded ..."
-    print "and has "+str(len(id))+" entries ...\n"
+    print("\n[Success] The catalog \""+filee+"\" was sucessfully loaded ...")
+    print("and has "+str(len(id))+" entries ...\n")
 
     out_table = {'pgc': id, 'flag': flag, 'sgl': sgl, 'sgb': sgb, 'gl': gl, 'gb': gb, 'ra': ra, 'dec': dec, 'Ks': Ks, 'Vls': Vls,
                  'R2t_lum': R_2t2, 'nest': nest, 'dcf2': dcf2, 'ed': ed, 'objname': objname,
@@ -582,21 +581,21 @@ def file_deliver(filee):
     Have_south = os.path.isfile('south.'+filee)
 
     if Have_north and not Have_south:
-        print "\n[Warning] The catalog \"" + \
-            'south.'+filee+"\" is not available, ..."
+        print("\n[Warning] The catalog \""+'south.' +
+              filee+"\" is not available, ...")
         return table_deliver('north.'+filee)
 
     elif Have_south and not Have_north:
-        print "\n[Warning] The catalog \"" + \
-            'north.'+filee+"\" is not available, ..."
+        print("\n[Warning] The catalog \""+'north.' +
+              filee+"\" is not available, ...")
         return table_deliver('south.'+filee)
 
     elif not Have_north and not Have_south:
 
-        print "\n[Warning] The catalog \"" + \
-            'south.'+filee+"\" is not available, ..."
-        print "[Warning] The catalog \""+'north.' + \
-            filee+"\" is not available, ...\n"
+        print("\n[Warning] The catalog \""+'south.' +
+              filee+"\" is not available, ...")
+        print("[Warning] The catalog \""+'north.' +
+              filee+"\" is not available, ...\n")
 
         return table_deliver(filee)
 
@@ -1004,7 +1003,7 @@ def transform(alpha, delta, ra, dec):
 def transform_list(alpha, delta, ra, dec):
 
     if len(ra) != len(dec):
-        print "[Error] RA and DEC should be in the same size ..."
+        print("[Error] RA and DEC should be in the same size ...")
         return 0, 0
 
     N = len(ra)
@@ -1220,13 +1219,15 @@ def main(alpha, delta, fig, ax, width=10, mode='equatorial', V_range=None, SGX=N
             j1 = -1.*V_range[1]/H0
             j2 = V_range[1]/H0
         else:
-            print "\n\n[Error] Given corrdinates and the projection are not consistent ... "
-            print "not enough information ..."
-            print "Please check your input parameters !\n"
+            print(
+                "\n\n[Error] Given corrdinates and the projection are not consistent ... ")
+            print("not enough information ...")
+            print("Please check your input parameters !\n")
             try:
-                print 'The minimum requirement is the upper limit for radial velocity.'
-                print 'Either enter a number here to continue, or anything else to abort ...'
-                input_var = input("Enter V_max (km/s): ")
+                print('The minimum requirement is the upper limit for radial velocity.')
+                print(
+                    'Either enter a number here to continue, or anything else to abort ...')
+                input_var = eval(input("Enter V_max (km/s): "))
                 try:
                     V_range[1] = float(input_var)
                     i1 = -1.*V_range[1]/H0
@@ -1236,7 +1237,7 @@ def main(alpha, delta, fig, ax, width=10, mode='equatorial', V_range=None, SGX=N
                 except:
                     exit(1)
             except:
-                print '\nSomething went wrong, \nTry again with command line ...\n'
+                print('\nSomething went wrong, \nTry again with command line ...\n')
                 exit(1)
 
         ax.set_xlim(i1, i2)
@@ -1379,12 +1380,12 @@ def ClusterPlot(id, ra, dec, Vls, R_2t2, mDist, nest, flag, parent, mode='none')
 
     N = len(id)
     NoGroups = len(id[np.where(flag == 2)])
-    print "Number of groups: ", NoGroups
+    print("Number of groups: ", NoGroups)
 
     if NoGroups == 0:
-        print "[Warning] No group found in data-base ..."
-        print "Check the input catalog and choose the right option ...\n"
-        print "You may be using the wrong catalog, not covering the desired coordiante system/range ...\n"
+        print("[Warning] No group found in data-base ...")
+        print("Check the input catalog and choose the right option ...\n")
+        print("You may be using the wrong catalog, not covering the desired coordiante system/range ...\n")
         exit(1)
         return
 
@@ -1569,7 +1570,7 @@ This is \"skyplop\" version v2.6
 Copyright 2016
 Author: \"Ehsan Kourkchi\"   
 '''
-        tkMessageBox.showinfo("About", text)
+        tkinter.messagebox.showinfo("About", text)
 
     def controls(self):
 
@@ -1674,7 +1675,7 @@ Author: \"Ehsan Kourkchi\"
 
     def on_exit(self):
         """When you click to exit, this function is called"""
-        if tkMessageBox.askyesno("Exit", "Do you really want to quit skyplot?"):
+        if tkinter.messagebox.askyesno("Exit", "Do you really want to quit skyplot?"):
             if self.frame.inputDialog != None:
                 self.frame.inputDialog.quit()
             sys.exit()
@@ -1709,9 +1710,9 @@ class VelDist:
         self.mySubmitButton = tk.Button(top, text='Close', command=self.quit)
         self.mySubmitButton.pack(side="bottom")
 
-        self.canvas.show()
+        self.canvas.draw()
         self.canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-        toolbar = NavigationToolbar2TkAgg(self.canvas, self.top)
+        toolbar = NavigationToolbar2Tk(self.canvas, self.top)
         toolbar.update()
         self.canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
@@ -1784,7 +1785,7 @@ class VelDist:
                              xycoords='figure fraction')
 
         if replot:
-            self.canvas.show()
+            self.canvas.draw()
             self.canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
             self.canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
@@ -1809,7 +1810,7 @@ class Plot_page(tk.Frame):
 
     def on_exit(self):
         """When you click to exit, this function is called"""
-        if tkMessageBox.askyesno("Exit", "Do you really want to quit skyplot?"):
+        if tkinter.messagebox.askyesno("Exit", "Do you really want to quit skyplot?"):
             if self.inputDialog != None:
                 self.inputDialog.quit()
             sys.exit()
@@ -1995,8 +1996,8 @@ class Plot_page(tk.Frame):
                         v_max.set("V.max : err")
 
             if mn and mx and vel_max < vel_min:
-                print "\nWarning:V.min must be smaller than V.max ...."
-                print "Try again ....\n"
+                print("\nWarning:V.min must be smaller than V.max ....")
+                print("Try again ....\n")
                 return
             if mn and mx:
                 if vel_min == -100000.:
@@ -2051,7 +2052,7 @@ class Plot_page(tk.Frame):
                 v_max.set("V.min : "+str(Vmax))
             self.label_vmin.set_text(r"$V_{min}: -       $")
             self.label_vmax.set_text(r"$V_{max}: -       $")
-            print 'Please wait ...'
+            print('Please wait ...')
             for obj in self.list_line:
                 obj[4] = True
                 p = vel_indx(obj[3])
@@ -2100,11 +2101,11 @@ class Plot_page(tk.Frame):
                             B = False
                             break
                     if B:
-                        print "PGC "+string+" is not available ..."
+                        print("PGC "+string+" is not available ...")
                         v.set("Not Available")
             except:
                 v.set("Not a number")
-                print "Error: Please enter a valid PGC number"
+                print("Error: Please enter a valid PGC number")
 
         def callclear():
             v.set("")
@@ -2176,12 +2177,12 @@ class Plot_page(tk.Frame):
             d_vel.config(state=tk.DISABLED)
             e_vel.config(state=tk.DISABLED)
             try:
-                print
-                input_var = input("Enter PGC #: ")
+                print()
+                input_var = eval(input("Enter PGC #: "))
                 v.set(input_var)
             except:
-                print
-                print "Error: ..."
+                print()
+                print("Error: ...")
                 event_active = True
             b.config(state=tk.NORMAL)
             c.config(state=tk.NORMAL)
@@ -2202,14 +2203,14 @@ class Plot_page(tk.Frame):
             d_vel.config(state=tk.DISABLED)
             e_vel.config(state=tk.DISABLED)
             try:
-                print
-                input_var = input("Enter V-min: ")
+                print()
+                input_var = eval(input("Enter V-min: "))
                 v_min.set("V.min (km/s): "+str(input_var))
-                input_var = input("Enter V-max: ")
+                input_var = eval(input("Enter V-max: "))
                 v_max.set("V.max (km/s): "+str(input_var))
             except:
-                print
-                print "Error: ..."
+                print()
+                print("Error: ...")
             event_active = True
             b.config(state=tk.NORMAL)
             c.config(state=tk.NORMAL)
@@ -2318,11 +2319,11 @@ class Plot_page(tk.Frame):
             y_cord = sgb
 
         if pgc != None:
-            print "Using the specified object coordinates: pgc", pgc
+            print("Using the specified object coordinates: pgc", pgc)
             index = np.where(nest == pgc)
             alpha = x_cord[index[0][0]]
             delta = y_cord[index[0][0]]
-            print alpha, delta
+            print(alpha, delta)
 
         x_min, x_max, y_min, y_max, self.xy_lim = main(alpha, delta, self.fig, self.ax, width=width, mode=mode, V_range=[
                                                        self.Vmin, self.Vmax], SGX=self.SGX, SGY=self.SGY, SGZ=self.SGZ, Projection=self.Projection)
@@ -2763,10 +2764,10 @@ class Plot_page(tk.Frame):
         # plt.show()
         #plt.savefig('test.ps', dpi=600)
 
-        self.canvas.show()
+        self.canvas.draw()
         self.canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
-        toolbar = NavigationToolbar2TkAgg(self.canvas, self)
+        toolbar = NavigationToolbar2Tk(self.canvas, self)
         toolbar.update()
         self.canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
@@ -2775,74 +2776,73 @@ class Plot_page(tk.Frame):
 if __name__ == '__main__':
 
     if (len(sys.argv) < 2):
-        print "\nNot enough input arguments ..."
-        print >> sys.stderr, "Use \"python " + \
-            sys.argv[0]+" -h\" for help ... (or 'skyplot -h') \n"
+        print("\nNot enough input arguments ...")
+        print("Use \"python "+sys.argv[0]+" -h\" for help ... (or 'skyplot -h') \n", file=sys.stderr)
         exit(1)
 
     opts, args = arg_parser()
-    print "\n------------------------------------"
-    print "Input Arguments (provided by User)"
-    print "------------------------------------"
-    print "Input file:", opts.file
-    print "Coordinate system:", opts.coordinate
-    print "alpha:", opts.alpha
-    print "delta:", opts.delta
-    print "width:", opts.width
-    print "pgc obj:", opts.pgc
-    print "V_min:", opts.Vmin
-    print "V_max:", opts.Vmax
-    print "SGX: ", opts.SGX
-    print "SGY: ", opts.SGY
-    print "SGZ: ", opts.SGZ
-    print "SGX Tickness: ", opts.XT
-    print "SGY Tickness: ", opts.YT
-    print "SGZ Tickness: ", opts.ZT
-    print "Projection: ", opts.projection
-    print "Virgo on: ", opts.G
+    print("\n------------------------------------")
+    print("Input Arguments (provided by User)")
+    print("------------------------------------")
+    print("Input file:", opts.file)
+    print("Coordinate system:", opts.coordinate)
+    print("alpha:", opts.alpha)
+    print("delta:", opts.delta)
+    print("width:", opts.width)
+    print("pgc obj:", opts.pgc)
+    print("V_min:", opts.Vmin)
+    print("V_max:", opts.Vmax)
+    print("SGX: ", opts.SGX)
+    print("SGY: ", opts.SGY)
+    print("SGZ: ", opts.SGZ)
+    print("SGX Tickness: ", opts.XT)
+    print("SGY Tickness: ", opts.YT)
+    print("SGZ Tickness: ", opts.ZT)
+    print("Projection: ", opts.projection)
+    print("Virgo on: ", opts.G)
     virgo_on = opts.G
-    print "------------------------------------"
-    print "Use You can use \"python "+sys.argv[0]+" -h\""
-    print "to see how you can set these values."
-    print "------------------------------------"
+    print("------------------------------------")
+    print("Use You can use \"python "+sys.argv[0]+" -h\"")
+    print("to see how you can set these values.")
+    print("------------------------------------")
 
     if opts.SGX != None and opts.SGY != None and opts.SGZ != None and opts.projection == None:
         if opts.XT != None and opts.YT == None and opts.ZT == None:
             opts.projection = 3
-            print "[Success] Chosen coordinate: SGY-SGZ "
+            print("[Success] Chosen coordinate: SGY-SGZ ")
         if opts.XT == None and opts.YT != None and opts.ZT == None:
             opts.projection = 2
-            print "[Success] Chosen coordinate: SGX-SGZ "
+            print("[Success] Chosen coordinate: SGX-SGZ ")
         if opts.XT == None and opts.YT == None and opts.ZT != None:
             opts.projection = 1
-            print "[Success] Chosen coordinate: SGX-SGY "
+            print("[Success] Chosen coordinate: SGX-SGY ")
 
     else:
         if opts.projection == None:
-            print "\n[Warning] the projection is not specified correctly ..."
-            print "[Success] Chosen coordinate: SGX-SGY "
+            print("\n[Warning] the projection is not specified correctly ...")
+            print("[Success] Chosen coordinate: SGX-SGY ")
             opts.projection = 1
             if opts.SGX != None and opts.SGY != None:
                 opts.projection = 1
             elif opts.SGX != None and opts.SGZ != None:
                 opts.projection = 2
-                print "[Success] Chosen coordinate: SGX-SGZ "
+                print("[Success] Chosen coordinate: SGX-SGZ ")
             elif opts.SGY != None and opts.SGZ != None:
                 opts.projection = 3
-                print "[Success] Chosen coordinate: SGY-SGZ "
+                print("[Success] Chosen coordinate: SGY-SGZ ")
         elif opts.projection % 3 > 2:
-            print "\n[Warning] Wrong projection number ..."
-            print "Still trying to figure out the best projection for your purpose ..."
+            print("\n[Warning] Wrong projection number ...")
+            print("Still trying to figure out the best projection for your purpose ...")
             opts.projection = 1
             if opts.SGX != None and opts.SGY != None:
                 opts.projection = 1
-                print "[Success] Chosen coordinate: SGX-SGY "
+                print("[Success] Chosen coordinate: SGX-SGY ")
             elif opts.SGX != None and opts.SGZ != None:
                 opts.projection = 2
-                print "[Success] Chosen coordinate: SGX-SGZ "
+                print("[Success] Chosen coordinate: SGX-SGZ ")
             elif opts.SGY != None and opts.SGZ != None:
                 opts.projection = 3
-                print "[Success] Chosen coordinate: SGY-SGZ "
+                print("[Success] Chosen coordinate: SGY-SGZ ")
 
     if opts.coordinate == 'equatorial':
         mode = "equatorial"
@@ -2853,27 +2853,24 @@ if __name__ == '__main__':
     elif opts.coordinate == 'cartesian':
         mode = 'cartesian'
     else:
-        print "\n[Warning] the coordinate system not specified correctly ..."
-        print >> sys.stderr, "You can use \"python " + \
-            sys.argv[0]+" -h\" for help ...\n"
-        print "Using equatorial system by default ...\n"
+        print("\n[Warning] the coordinate system not specified correctly ...")
+        print("You can use \"python "+sys.argv[0]+" -h\" for help ...\n", file=sys.stderr)
+        print("Using equatorial system by default ...\n")
         mode = "equatorial"
 
     if opts.file != None:
         filee = opts.file
     else:
-        print "Input filename:", filee
-        print "\n[Error] The input file was not specified correctly ..."
-        print >> sys.stderr, "You can use \"python " + \
-            sys.argv[0]+" -h\" for help ... (or 'skyplot -h') \n"
+        print("Input filename:", filee)
+        print("\n[Error] The input file was not specified correctly ...")
+        print("You can use \"python "+sys.argv[0]+" -h\" for help ... (or 'skyplot -h') \n", file=sys.stderr)
         exit(1)
 
     if opts.alpha == None:
-        print "\n[Warning] alpha not specified correctly ..."
-        print >> sys.stderr, "You can use \"python " + \
-            sys.argv[0]+" -h\" for help ...\n"
-        print "Using the default value ..."
-        print "alpha = 0\n"
+        print("\n[Warning] alpha not specified correctly ...")
+        print("You can use \"python "+sys.argv[0]+" -h\" for help ...\n", file=sys.stderr)
+        print("Using the default value ...")
+        print("alpha = 0\n")
         alpha = 0
     else:
         alpha = opts.alpha
@@ -2885,48 +2882,42 @@ if __name__ == '__main__':
             alpha = 360. - alpha
 
     if opts.delta == None:
-        print "\n[Warning] delta not specified correctly ..."
-        print >> sys.stderr, "You can use \"python " + \
-            sys.argv[0]+" -h\" for help ...\n"
-        print "Using the default value ..."
-        print "delta = 0\n"
+        print("\n[Warning] delta not specified correctly ...")
+        print("You can use \"python "+sys.argv[0]+" -h\" for help ...\n", file=sys.stderr)
+        print("Using the default value ...")
+        print("delta = 0\n")
         delta = 0
     else:
         delta = opts.delta
         if delta > 90 or delta < -90:
-            print "\n[Error] delta must be in [-90,90] range ..."
-            print "You entered: ", delta
-            print >> sys.stderr, "You can use \"python " + \
-                sys.argv[0]+" -h\" for help ... (or 'skyplot -h') \n"
+            print("\n[Error] delta must be in [-90,90] range ...")
+            print("You entered: ", delta)
+            print("You can use \"python "+sys.argv[0]+" -h\" for help ... (or 'skyplot -h') \n", file=sys.stderr)
             if opts.pgc == None:
                 exit(1)
 
     if opts.width == None:
-        print "\n[Warning] width is not specified correctly ..."
-        print >> sys.stderr, "You can use \"python " + \
-            sys.argv[0]+" -h\" for help ...\n"
-        print "Using the default value ..."
-        print "width = 20 deg/Mpc\n"
+        print("\n[Warning] width is not specified correctly ...")
+        print("You can use \"python "+sys.argv[0]+" -h\" for help ...\n", file=sys.stderr)
+        print("Using the default value ...")
+        print("width = 20 deg/Mpc\n")
         width = 10
     else:
         width = opts.width/2.
 
     if opts.Vmin == None:
-        print "\n[Warning] V_min has not been specified ..."
-        print "[Warning] The Lower limit on radial velocity is -Inifinity ..."
-        print >> sys.stderr, "You can use \"python " + \
-            sys.argv[0]+" -h\" for help ...\n"
+        print("\n[Warning] V_min has not been specified ...")
+        print("[Warning] The Lower limit on radial velocity is -Inifinity ...")
+        print("You can use \"python "+sys.argv[0]+" -h\" for help ...\n", file=sys.stderr)
 
     if opts.Vmax == None:
-        print "\n[Warning] V_max has not been specified ..."
-        print "[Warning] The Upper limit on radial velocity is +Inifinity ..."
-        print >> sys.stderr, "You can use \"python " + \
-            sys.argv[0]+" -h\" for help ...\n"
+        print("\n[Warning] V_max has not been specified ...")
+        print("[Warning] The Upper limit on radial velocity is +Inifinity ...")
+        print("You can use \"python "+sys.argv[0]+" -h\" for help ...\n", file=sys.stderr)
 
     if opts.Vmin != None and opts.Vmax != None and opts.Vmin > opts.Vmax:
-        print "\n[Error] V_min must be smaller than V_max. Try again ..."
-        print >> sys.stderr, "You can use \"python " + \
-            sys.argv[0]+" -h\" for help ...\n"
+        print("\n[Error] V_min must be smaller than V_max. Try again ...")
+        print("You can use \"python "+sys.argv[0]+" -h\" for help ...\n", file=sys.stderr)
         exit(1)
 
     # Main loop of the program

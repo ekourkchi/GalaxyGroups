@@ -234,8 +234,8 @@ if __name__ == '__main__':
 
   
 
-  deg = 1.0
-  a = pyfits.open('EBV.1.deg.fits')
+  deg = 5.0
+  a = pyfits.open('EBV.5.deg.fits')
   d = a[1].data
   
   
